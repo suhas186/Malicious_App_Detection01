@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Malicious App Detection — Project Overview</title>
+  <meta name="description" content="Portfolio-ready overview page for an Android Malicious App Detection project: goals, features, datasets, methods, setup, and roadmap." />
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23111827'/><text x='50' y='60' text-anchor='middle' font-size='54' fill='white'>MAD</text></svg>">
+  <style>
+    :root{--bg:#0b1220;--card:#111827;--ink:#e5e7eb;--muted:#9ca3af;--line:rgba(255,255,255,.12);--brand:#22d3ee;--accent:#60a5fa}
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;color:var(--ink);background:
+      radial-gradient(1000px 700px at 80% -120px, rgba(96,165,250,.25), transparent 60%),
+      radial-gradient(900px 600px at -10% 15%, rgba(34,211,238,.2), transparent 55%), var(--bg)}
+    a{color:var(--brand);text-underline-offset:3px}
+    .container{max-width:1060px;margin:0 auto;padding:28px}
+    .badge{display:inline-flex;gap:.5rem;align-items:center;color:var(--muted);border:1px solid var(--line);padding:6px 10px;border-radius:999px;backdrop-filter:blur(6px)}
+    h1{font-size:clamp(2rem,4vw,3rem);line-height:1.1;margin:.7rem 0 0;font-weight:800;letter-spacing:-.02em}
+    .subtitle{color:var(--muted);max-width:75ch}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:color-mix(in oklab, var(--card) 94%, #000 6%);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+    .p{padding:18px}
+    .kicker{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.12em}
+    .code{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,'Liberation Mono','Courier New',monospace;font-size:.92rem;background:#0a0f1c;border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto}
+    ul{margin-top:.25rem}
+    .footer{color:var(--muted);font-size:.9rem;border-top:1px solid var(--line);margin-top:28px;padding-top:18px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .btn{border:1px solid var(--line);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));color:white;padding:11px 14px;border-radius:14px;text-decoration:none;font-weight:600}
+    .btn:hover{box-shadow:0 0 0 8px color-mix(in oklab, var(--brand) 30%, transparent)}
+    .btn.primary{background:linear-gradient(180deg, color-mix(in oklab, var(--accent) 35%, transparent), rgba(255,255,255,.02));border-color:rgba(96,165,250,.45)}
+    @media (max-width:980px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="badge">🔍 Security • Android • ML</div>
+    <h1>Malicious App Detection</h1>
+    <p class="subtitle">An Android-focused project that flags risky apps by analyzing permissions, manifest metadata, static features (e.g., API calls), and optional network/runtime signals. This page is meant to be added as <code>index.html</code> in your GitHub repository or published via GitHub Pages.</p>
+    <div class="cta">
+      <a class="btn primary" href="#setup">Get Started</a>
+      <a class="btn" href="#datasets">Datasets</a>
+      <a class="btn" href="#architecture">Architecture</a>
+      <a class="btn" href="#roadmap">Roadmap</a>
+    </div>
+
+    <section class="card p" id="overview">
+      <p class="kicker">Overview</p>
+      <p><strong>Goal:</strong> Help users and analysts identify potentially malicious Android apps using transparent, explainable features (permissions, components, intent filters, strings) and a machine‑learning model (e.g., SVM/RandomForest or on‑device TensorFlow Lite). Inspired by classic research like <em>DREBIN</em> and modern Android privacy changes.</p>
+      <ul>
+        <li><strong>Package visibility (Android 11+):</strong> Your scanner should respect Android's package visibility rules; only query visible apps or justify <code>QUERY_ALL_PACKAGES</code> when absolutely necessary.</li>
+        <li><strong>Permissions:</strong> Focus on runtime ("dangerous") permissions alongside other features; analyze combinations rather than single permissions in isolation.</li>
+      </ul>
+    </section>
+
+    <section class="grid" aria-label="Key Features">
+      <article class="card p">
+        <p class="kicker">Static Analysis</p>
+        <h3>Manifest & Code Signals</h3>
+        <ul>
+          <li>Requested permissions (dangerous/signature), exported components, intent filters</li>
+          <li>Strings, URLs, suspicious API packages (e.g., SMS, telephony)</li>
+          <li>APK hash (SHA‑256) for sample tracking</li>
+        </ul>
+      </article>
+      <article class="card p">
+        <p class="kicker">Modeling</p>
+        <h3>ML Classifier</h3>
+        <ul>
+          <li>Train SVM/RandomForest/XGBoost on feature vectors</li>
+          <li>Optional on‑device inference via TensorFlow Lite</li>
+          <li>Metrics: Precision/Recall/F1, ROC‑AUC, confusion matrix</li>
+        </ul>
+      </article>
+      <article class="card p">
+        <p class="kicker">Explainability</p>
+        <h3>Why is it risky?</h3>
+        <ul>
+          <li>Top contributing features per prediction</li>
+          <li>Rule snippets (e.g., "reads SMS + sends SMS + installs packages")</li>
+          <li>Human‑readable report export (JSON/Markdown)</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="card p" id="architecture" aria-label="Architecture">
+      <p class="kicker">Architecture</p>
+      <pre class="code"><code>malicious-app-detection/
+├─ data/                 # datasets or APKs (do NOT commit raw malware)
+├─ features/             # scripts to extract static features
+├─ models/               # training notebooks & saved models (joblib / tflite)
+├─ app/                  # optional Android client for on-device scoring
+├─ src/                  # core library (parsers, scorers, utils)
+├─ notebooks/            # EDA, experiments
+├─ reports/              # Markdown/HTML risk reports
+├─ README.md             # project overview & usage
+├─ LICENSE               # MIT/Apache-2.0 recommended
+├─ .gitignore            # ignore builds, caches, sample APKs, secrets
+└─ .github/workflows/ci.yml  # tests & lint
+</code></pre>
+    </section>
+
+    <section class="card p" id="datasets" aria-label="Datasets">
+      <p class="kicker">Datasets</p>
+      <ul>
+        <li><strong>AndroZoo:</strong> multi‑million‑app corpus with AV labels and metadata (research access required).</li>
+        <li><strong>Drebin:</strong> classic Android malware dataset with manifest/code features.</li>
+        <li><strong>CIC‑AndMal2017:</strong> labeled benign/malware apps across families (network + behavior traces).</li>
+      </ul>
+      <p class="subtitle">Always respect licenses and ethics; never upload malware samples to your public repo. Store hashes and derived features instead.</p>
+      <div class="cta">
+        <a class="btn" href="https://androzoo.uni.lu/" target="_blank" rel="noopener">AndroZoo</a>
+        <a class="btn" href="https://drebin.mlsec.org/" target="_blank" rel="noopener">Drebin</a>
+        <a class="btn" href="https://www.unb.ca/cic/datasets/andmal2017.html" target="_blank" rel="noopener">CIC‑AndMal2017</a>
+      </div>
+    </section>
+
+    <section class="card p" id="setup" aria-label="Setup & Usage">
+      <p class="kicker">Setup</p>
+      <h3>Local training (Python)</h3>
+      <pre class="code"><code># 1) Create env and install
+python -m venv .venv && source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+pip install -r requirements.txt  # scikit-learn, pandas, joblib, tflite-runtime(optional)
+
+# 2) Extract features from APKs (outputs CSV/Parquet)
+python -m features.extract --apks ./data/apks --out ./data/features.parquet
+
+# 3) Train a model
+python -m src.train --features ./data/features.parquet --model ./models/rf.joblib
+
+# 4) Score new APK
+python -m src.score --apk path/to/app.apk --model ./models/rf.joblib --report ./reports/app.md</code></pre>
+
+      <h3>Android client (optional)</h3>
+      <pre class="code"><code>// app/AndroidManifest.xml notes
+// • Consider package visibility queries for launchable apps
+// • Use SHA-256 to identify APKs; do NOT upload user APKs off-device
+// • Show an explanation of risk features in the UI</code></pre>
+    </section>
+
+    <section class="grid" aria-label="Guidelines & Ethics">
+      <article class="card p">
+        <p class="kicker">Android 11+</p>
+        <h3>Package Visibility</h3>
+        <p>Query only what you need. If you must scan installed apps, declare proper visibility and justify <code>QUERY_ALL_PACKAGES</code> per policy. Prefer filtering by launcher‑visible apps.</p>
+      </article>
+      <article class="card p">
+        <p class="kicker">Permissions</p>
+        <h3>Runtime “Dangerous”</h3>
+        <p>Interpret permission combinations in context (SMS, Contacts, Storage, Accessibility). Do not infer malice from a single permission alone.</p>
+      </article>
+      <article class="card p">
+        <p class="kicker">Safety</p>
+        <h3>Handling Malware</h3>
+        <p>Do not push malicious APKs to public repos. Keep samples offline, store hashes/features only, and use isolated test devices/VMs.</p>
+      </article>
+    </section>
+
+    <section class="card p" id="roadmap" aria-label="Roadmap">
+      <p class="kicker">Next Steps</p>
+      <ul>
+        <li>Add dynamic analysis hooks (network, system calls) in a sandbox.</li>
+        <li>Implement SHAP/LIME for per‑prediction explanations.</li>
+        <li>Export a compact TensorFlow Lite model for on‑device scans.</li>
+        <li>Periodic re‑training with updated datasets and concept‑drift checks.</li>
+      </ul>
+    </section>
+
+    <section class="card p" aria-label="License & Citation">
+      <p class="kicker">Attribution</p>
+      <p>Recommend <strong>MIT</strong> or <strong>Apache‑2.0</strong> license for code. Cite datasets and prior work in your README.</p>
+      <pre class="code"><code>@inproceedings{arp2014drebin,
+  title={DREBIN: Effective and Explainable Detection of Android Malware in Your Pocket},
+  author={Arp, Daniel and Spreitzenbarth, Michael and Hubner, Malte and Gascon, Hugo and Rieck, Konrad and Siemens, CERT},
+  booktitle={NDSS}, year={2014}
+}
+</code></pre>
+    </section>
+
+    <footer class="footer">
+      <p>© <span id="y"></span> Your Name • For research/education. This project is not affiliated with Google/Android. Use responsibly.</p>
+    </footer>
+  </main>
+  <script>document.getElementById('y').textContent = new Date().getFullYear()</script>
+</body>
+</html>
